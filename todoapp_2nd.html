@@ -1,90 +1,193 @@
 <!DOCTYPE html>
 <html lang ="en">
 <head>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>My ToDo App</title>
-	<style>
-		.container {
-			background-color: #ffc107;
-			box-shadow: 0px 0px 10px #888888;
-			margin: auto;
-			margin-top: 50px;
-			padding: 50px;
-			width: 75%;
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+<!-- 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/ -->
+<!-- 	bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
+<style>
+    body {
+        margin: 0;
+        font-family: var(--bs-font-sans-serif);
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        -webkit-text-size-adjust: 100%;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    h2{
+        margin-top: 0;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        line-height: 1.2;
+        font-size: calc(1.325rem + .9vw);
+    }
+
+    hr{
+        margin: 1rem 0;
+        color: inherit;
+        background-color: currentColor;
+        border: 0;
+        opacity: .25;
+    }
+
+    hr:not([size]) {
+        height: 1px;
+    }
+
+    .container{
+        max-width: 720px;
+    }
+
+   .bg-warning {
+        background-color: #ffc107;
+        padding: 3rem;
+        width: 75%;
+        margin: 3rem auto auto auto;
+        box-shadow: 0 0.5rem 1em rgba(0,0,0,.15);
+    }
+
+    .input-group {
+        position: relative;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .input-group>.form-control, 
+    .input-group>.form-select {
+        position: relative;
+        flex: 1 1 auto;
+        width: 1%;
+        min-width: 0;
+    }
+
+    .form-control {
+        display: block;
+        width: 100%;
+        padding: 0.375rem 0.75rem;
+        font-size: 1rem;
+        font-weight: 400;
+        line-height: 1.5;
+        color: #212529;
+        background-color: #fff;
+        background-clip: padding-box;
+        border: 1px solid #ced4da;
+        border-radius: 0.25rem;
+    }
+
+    .btn-primary {
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+        border: 1px solid transparent;
+        padding: 0.375rem 0.75rem;
+        border-radius: 0.25rem;
+        font-size: 1rem;
+    }
+
+    .list-group {
+        display: flex;
+        flex-direction: column;
+        padding-left: 0;
+        margin-bottom: 0;
+        border-radius: 0.25rem;
+    }
+
+    .list-group-item {
+        position: relative;
+        /* display: block; */
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        border: 1px solid rgba(0,0,0,.125);
+        color: #664d03;
+        background-color: #fff3cd;
+        display: flex!important;
+    }
+
+    .list-group-item:first-child {
+        border-top-left-radius: inherit;
+        border-top-right-radius: inherit;
+    }
+
+    .list-group-item:last-child {
+        border-bottom-right-radius: inherit;
+        border-bottom-left-radius: inherit;
+    }
+
+    .list-group-item+.list-group-item {
+        border-top-width: 0;
+    }
+
+    .btn-close {
+        margin-left: auto!important;
+        box-sizing: content-box;
+        width: 1em;
+        height: 1em;
+        padding: 0.25em 0.25em;
+        color: #000;
+        background: url(./close.svg) center/1em auto no-repeat
+        border: 0;
+        border-radius: 0.25rem;
+        opacity: .5;
+    }
+
+</style>
+<script>
+
+	function addItem(){
+
+		//입력값을 읽어옴
+		let todo= document.getElementById("item");
+		//ul요소 가져옴
+		let list= document.getElementById("todolist");
+		//새로운 li 요소 생성
+		let listitem= document.createElement("li");
+		//li 요소에 들어갈 닫기 버튼 생성
+		let xbtn = document.createElement("button");
+		listitem.className
+			= "d-flex list-group-item list-group-item-action list-group-item-warning";
+		xbtn.className = "btn-close ms-auto";
+		//close 버튼 이벤트처리
+		xbtn.onclick=function(e){
+			//이벤트가 발생한 li 요소를 구해서 ul 요소에서 제거
+			let pnode =e.target.parentNode;
+			list.removeChild(pnode);
 		}
-		h2 {
-			margin-bottom: 20px;
-		}
-		.input-group {
-			margin-bottom: 20px;
-		}
-		.form-control {
-			margin-right: 10px;
-		}
-		.list-group-item {
-			display: flex;
-			align-items: center;
-			background-color: #fff3cd;
-			padding: .75rem 1.25rem;
-			margin-bottom: -1px;
-			border: 1px solid rgba(0,0,0,.125);
-		}
-		.list-group-item button {
-			margin-left: auto;
-		}
-		.btn-close {
-			color: #fff;
-			font-size: 1.5rem;
-			font-weight: bold;
-			background-color: transparent;
-			border: none;
-			transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
-			transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out;
-			transition: color .15s ease-in-out,background-color .15s ease-in-out,border-color .15s ease-in-out,box-shadow .15s ease-in-out,-webkit-box-shadow .15s ease-in-out;
-		}
-		.btn-close:hover {
-			color: #212529;
-			background-color: #fff;
-			border-color: #fff;
-			box-shadow: none;
-		}
-		.btn-close:focus {
-			outline: 0;
-			box-shadow: none;
-		}
-	</style>
+		//ㅣㅑ dyth rntjd
+		listitem.innerText=todo.value;
+		listitem.appendChild(xbtn);
+		//ul 요소에 li 요소 추가
+		list.appendChild(listitem);
+						//listitem.innerText=todo.value;
+						//list.appendChild(listitem);
+		//입력칸 비우기 ~
+		todo.value="";
+		tpdo.focus();
+	}
+	</script>
+<title>My ToDo App</title>
+
 </head>
+
 <body>
-	<div class="container">
+	<div class="container bg-warning shadow mx-auto mt-5 p-5 w-75">
 		<h2> My Todo App</h2>
 		<hr>
 		<div class="input-group">
 			<input id="item" class="form-control" type="text" placeholder="할일을 입력하세요..">
-			<button type="button" class="btn btn-primary" onclick="addItem()">할일 추가</button>
+			<button type="button" class="btn btn-primary" onclick="addItem()">할일 추가
+			</button>
 		</div>
 		<hr>
 		<ul id="todolist" class="list-group"></ul>
 	</div>
-	<script>
-		function addItem() {
-			let todo = document.getElementById("item");
-			let list = document.getElementById("todolist");
-			let listitem = document.createElement("li");
-			let xbtn = document.createElement("button");
-			listitem.className = "list-group-item";
-			xbtn.className = "btn-close";
-			xbtn.onclick = function(e) {
-				let pnode = e.target.parentNode;
-				list.removeChild(pnode);
-			}
-			listitem.innerText = todo.value;
-			listitem.appendChild(xbtn);
-			list.appendChild(listitem);
-			todo.value = "";
-			todo.focus();
-		}
-	</script>
 </body>
 </html>
